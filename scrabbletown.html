@@ -1,0 +1,303 @@
+<html>
+<head>
+  <title>Scrabbletown</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+  <link href="assets/styles.css" media="all" rel="stylesheet" type="text/css"/>
+  <!--
+  <script src="assets/jquery-ui/js/jquery-1.9.0.js" type="text/javascript"></script>
+  <script src="assets/jquery-ui/js/jquery-ui-1.10.0.custom.js" type="text/javascript"></script>
+  -->
+  <script>
+    $(function() {
+
+      var boardWidth = 9;       // Board width in squares
+      var boardHeight = 9;      // Board height in squares
+      var tileCoverage = 0.2    // Proportion of board covered when all tiles are played
+      var tilesPerTurn = 7      // Maximum number of tiles per turn
+      var roadProbability = 0.2 // Chance that a tile will contain a particular road direction
+      
+      var roadDirections = [ "tb", "lr", "br", "tl", "tr", "bl" ];
+      var totalTiles = Math.round(boardWidth * boardHeight * tileCoverage);
+
+
+      initialise();
+
+      // Initialise game
+      function initialise() {
+        generateBoard();
+        makeTileRackDroppable('player-1');
+        makeTileRackDroppable('player-2');
+        $('#player-2 .controls').hide();
+        $('#player-1').addClass('current');
+        $('.new-game').hide();
+        fillRack('player-2');
+        fillRack('player-1');
+        updateTilesLeft();
+        updateScores();
+      }
+
+      // Update the number of tiles left
+      function updateTilesLeft() {
+        var tilesOnBoard = $("#board .tile").size();
+        var tilesLeft = totalTiles - tilesOnBoard;
+        if(tilesLeft == 1){
+          tilesLeft = tilesLeft + " tile remaining"
+        } else {
+          tilesLeft = tilesLeft + " tiles remaining"
+        }
+        $(".tile-count").empty().append(tilesLeft);
+      }
+
+      // Update the score
+      function updateScores() {
+        playerOneScore = 0;
+        $('.square .player-1.tile').each(function(){
+          var tileValue = $(this).find(".value").text();
+          playerOneScore = playerOneScore + Number(tileValue);
+        });
+        $("#player-1-score span").empty().append(playerOneScore);
+
+        playerTwoScore = 0;
+        $('.square .player-2.tile').each(function(){
+          var tileValue = $(this).find(".value").text();
+          playerTwoScore = playerTwoScore + Number(tileValue);
+        });
+        $("#player-2-score span").empty().append(playerTwoScore);
+      }
+
+      // Generate game board
+      function generateBoard() {
+        // Create rows
+        for (var i=0; i<boardHeight; i++){
+          $("#board").append('<div class="row"></div>');
+        }
+        // Create squares in rows
+        for (var i=0; i<boardWidth; i++){ 
+          $("#board .row").append('<div class="square"></div>');
+        }
+        // Randomly create different types of square across board
+        $('.square').each(function(){
+          var random = Math.round(Math.random()*10);
+          if (random == 1){
+            $(this).addClass("green");
+          } else if (random == 2) {
+            $(this).addClass("commercial");
+          }
+        });
+      }
+
+      // Generate random tile
+      function generateTile(player) {
+        tileRack = $('#'+player).find('.tile-rack');
+
+        // Create an empty tile and stick it in the tile rack
+        tile = $('<div class="' + player + ' tile"></div>').appendTo(tileRack);
+
+        generateRoads(tile);
+
+        // Make tile rotate 90 degrees if it's clicked
+        tile.click(function() {
+        $(this).find('.road').each(function(){
+           if ($(this).hasClass('lr')) {
+              $(this).removeClass('lr').addClass('tb');
+           } else if ($(this).hasClass('tb')) {
+              $(this).removeClass('tb').addClass('lr');
+           } else if ($(this).hasClass('tr')) {
+              $(this).removeClass('tr').addClass('br');
+           } else if ($(this).hasClass('bl')) {
+              $(this).removeClass('bl').addClass('tl');
+           } else if ($(this).hasClass('tl')) {
+              $(this).removeClass('tl').addClass('tr');
+           } else if ($(this).hasClass('br')) {
+              $(this).removeClass('br').addClass('bl');
+           }
+          });
+        });
+
+        // Write tile value to top-right of tile
+        tile = updateTileValue(tile);
+
+        // Sort order of roads so larger ones go over smaller ones
+        tile.find('.road-2').appendTo(tile);
+        tile.find('.road-3').appendTo(tile);
+      }
+
+      // Generate the roads in a tile
+      function generateRoads(tile) {        
+        // Cycle through the different road directions and then
+        // randomly choose whether or not to add them to the tile
+        $.each(roadDirections, function(i, RoadDirection) {
+          var random = Math.random();
+          if (random < roadProbability){
+            // Randomly select one of the three road types
+            var roadType = Math.floor(Math.random() * 3) + 1;
+
+            // One in ten roads are right angles instead of curves
+            var tJunction = "";
+            var random = Math.round(Math.random()*10);
+            if (random == 1){
+              tJunction = "t-junct";
+            }
+            tile.append('<div class="road road-' + roadType + ' ' + tJunction + ' ' + RoadDirection + '"></div>')
+            .draggable({
+              revert: "invalid",
+              revertDuration: 200,
+              zIndex: 1000
+            })
+          };
+        });
+        // Try again if the tile ends up empty
+        if (!tile.find('.road').length){
+          generateRoads(tile);
+        }
+      }
+
+      // Fill tile rack
+      function fillRack(player) {
+        var tilesInRack = $("#"+player+" .tile-rack .tile").size();
+        var tilesOnBoard = $("#board .tile").size();
+        var tilesLeft = totalTiles - tilesOnBoard;
+        var tilesMissing = tilesPerTurn - tilesInRack;
+
+        // If there aren't enough tiles left to fill the rack, just use what tiles are left
+        if (tilesLeft < tilesMissing ){
+          tilesMissing = tilesLeft;
+        }
+
+        for (var i=0; i<tilesMissing; i++){
+          generateTile(player);
+        }
+      }
+
+      // ===========================================
+      // TURN TAKING
+
+      // Player 1
+      $('#player-1 .play-turn').click(function() {
+        $('#player-2').addClass('current').find('.controls').slideDown('fast');
+        $('#player-1').removeClass('current').find('.controls').slideUp('fast');
+        fillRack('player-2');
+        checkForWinner();
+        return false;
+      });
+      // Player 2
+      $('#player-2 .play-turn').click(function() {
+        $('#player-1').addClass('current').find('.controls').slideDown('fast');
+        $('#player-2').removeClass('current').find('.controls').slideUp('fast');
+        fillRack('player-1');
+        checkForWinner();
+        return false;
+      });
+
+      function checkForWinner() {
+        if($(".tile-count").text() == "0 tiles remaining"){
+          var playerOneScore = $('#player-1-score span').text();
+          var playerTwoScore = $('#player-2-score span').text();
+
+          $('#player-1').removeClass('current').find('.controls').slideUp('fast');
+          $('#player-2').removeClass('current').find('.controls').slideUp('fast');
+          $('.tile-count').hide();
+          $('.new-game').show();
+
+          if(playerOneScore > playerTwoScore) {
+            alert('Player 1 wins!');
+          } else if(playerOneScore < playerTwoScore) { 
+            alert('Player 2 wins!');
+          } else {
+            alert("It's a draw!");
+          }
+        }
+      }
+
+
+      // Write tile value to tile
+      function updateTileValue(tile) {
+        var tileValue = 0
+        tile.find('.road').each(function(){
+          var classes = $(this).attr('class');
+          var roadValue = classes.match("road-(.*?) ")[1];
+          tileValue = tileValue + Number(roadValue)
+        });
+        tile.prepend('<span class="value">' + tileValue + '</span>');
+        return tile;
+      }
+
+      // Make board squares droppable
+      $('.square').droppable({
+        accept: ".tile",
+        hoverClass: "target-square",
+        drop: function(ev, ui) {
+            var dropped = ui.draggable;
+            var droppedOn = $(this);
+            $(dropped).css({top: 0,left: 0}).appendTo(droppedOn);
+            updateTilesLeft();
+            updateScores();
+        }
+      });
+
+      // Make player tile rack droppable (but only to players own tiles)
+      function makeTileRackDroppable(player) {
+        tileRack = $('#'+player).find('.tile-rack');
+        tileRack.droppable({
+          accept: "." + player + ".tile",
+          drop: function(ev, ui) {
+              var dropped = ui.draggable;
+              var droppedOn = $(this);
+              $(dropped).css({top: 0,left: 0}).appendTo(droppedOn);
+              updateTilesLeft();
+              updateScores()
+          }
+        });
+      }
+
+    });
+  </script>
+</head>
+<body>
+
+<h2>Scrabbletown</h2>
+
+
+
+
+
+<div class="side-bar">
+  <div class="game-data">
+    <div class="player" id="player-1">
+      <h2>Player 1</h2>
+      <div class="score" id="player-1-score">
+        <span></span> points
+      </div>
+      <div class="controls">
+        <div class="tile-rack"></div>
+        <a class="play-turn" href="" >Play turn</a>
+      </div>
+    </div>
+    <div class="player" id="player-2">
+      <h2>Player 2</h2>
+      <div class="score" id="player-2-score">
+        <span></span> points
+      </div>
+      <div class="controls">
+        <div class="tile-rack"></div>
+        <a class="play-turn" href="" >Play turn</a>
+      </div>
+    </div>
+  </div>
+  <div class="game-stats">
+    <div id="tile-count">
+      <span class="tile-count"></span>
+    </div>
+  </div>
+  <div class="new-game">
+    <a href="">New game</a>
+  </div>
+</div>
+
+<div class="board-base">
+  <div id="board" class="board"></div>
+</div>
+
+</body>
+</html>

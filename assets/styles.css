@@ -1,0 +1,54 @@
+body { font-family: Arial; padding: 20px 10px; background-color: #333; color: white; -webkit-font-smoothing: antialiased; }
+
+.board-base { width: 720px; padding: 10px; background-color: grey; display: inline-block; margin-top: -60px; }
+
+.board { width: 720px; height: 720px; display: inline-block; }
+
+.square { background-color: #f4f3f0; width: 80px; height: 80px; position: relative; float: left; outline: 1px solid rgba(0, 0, 0, 0.2); }
+.square.green { background-color: #cadfaa; background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #cadfaa), color-stop(50%, #cadfaa), color-stop(52%, #f4f3f0), color-stop(100%, #f4f3f0), color-stop(100%, #7db9e8)); background: -webkit-radial-gradient(center, ellipse cover, #cadfaa 0%, #cadfaa 50%, #f4f3f0 52%, #f4f3f0 100%, #7db9e8 100%); }
+.square.commercial { background-color: #dfdbd4; }
+.square .tile { background: none; outline: none; }
+
+.target-square { background-color: #ccc; box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.25); }
+
+.tile { background-color: #f4f3f0; width: 80px; height: 80px; overflow: hidden; position: relative; float: left; outline: 1px solid #bbbbbb; text-shadow: none; }
+.tile:hover { cursor: hand; }
+.tile .value { float: right; padding: 4px 6px 0 0; color: #AAA; font-size: 16px; }
+.tile .road { border: 1px solid grey; width: 160px; height: 160px; border-radius: 40px; position: absolute; }
+.tile .road-1 { border: 1px solid #ffc345; box-shadow: 0 0 0 1px #ffc345; }
+.tile .road-2 { border: 2px solid #95d17b; box-shadow: 0 0 0 2px #95d17b; }
+.tile .road-3 { border: 3px solid #7687de; box-shadow: 0 0 0 3px #7687de; }
+.tile .t-junct { border-radius: 0; }
+.tile .airport { position: absolute; font-size: 50px; -webkit-transform: rotate(-45deg); left: 20px; top: 10px; color: #585048; }
+.tile .tb { bottom: -40px; left: 40px; }
+.tile .lr { top: 40px; right: -40px; }
+.tile .tr { bottom: 40px; left: 40px; }
+.tile .tl { bottom: 40px; right: 40px; }
+.tile .br { top: 40px; left: 40px; }
+.tile .bl { top: 40px; right: 40px; }
+.tile.ui-draggable-dragging { box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25); background-color: #f4f3f0; outline: 1px solid #bbbbbb; }
+
+.side-bar { width: 300px; display: inline-block; vertical-align: top; text-shadow: 1px 1px rgba(0, 0, 0, 0.5); }
+
+.game-stats, .player, .new-game { padding: 10px; margin-right: 14px; margin-bottom: 20px; }
+.game-stats h2, .player h2, .new-game h2 { font-size: 22px; margin: 5px 0; }
+
+.player { background-color: grey; }
+.player.current h2 { margin-bottom: 15px; }
+.player.current .score { margin-top: -42px; }
+
+.new-game { background-color: grey; padding-top: 10px; }
+
+.score { width: 130px; float: right; text-align: right; margin-top: -32px; font-size: 22px; font-weight: bold; }
+
+.game-stats { margin-top: 20px; }
+
+.tile-rack { background-color: #ccc; height: 258px; padding: 6px 0 0 6px; }
+.tile-rack .tile { margin: 0 6px 6px 0; }
+
+.play-turn, .new-game a { padding: 20px 0 20px 0; display: block; background: green; color: white; text-decoration: none; text-align: center; font-size: 28px; margin-top: 10px; }
+.play-turn:hover, .new-game a:hover { background: #00b300; }
+
+.new-game a { margin-top: 0; }
+
+.player h2 { color: white; }

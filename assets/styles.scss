@@ -1,0 +1,217 @@
+  body{
+    font-family: Arial;
+    padding: 20px 10px;
+    background-color: #333;
+    color: white;
+    -webkit-font-smoothing: antialiased;
+  }
+
+
+
+  $board-h-squares: 9;
+  $board-v-squares: 9;
+
+  $board-padding: 10px;
+  $tile-width: 80px;
+  $road-1-width: 2px;
+  $road-2-width: 4px;
+  $road-3-width: 6px;
+  $road-1-colour: #ffc345;
+  $road-2-colour: #95d17b;
+  $road-3-colour: #7687de;
+  $road-curve: $tile-width / 2;
+
+  $tile-1-colour: #f4f3f0;
+  $tile-2-colour: #dfdbd4;
+  $tile-3-colour: #cadfaa;
+
+
+
+  .board-base{
+    width: $board-h-squares * $tile-width;
+    padding: $board-padding;
+    background-color: grey;
+    display: inline-block;
+    margin-top: -60px;
+  }
+  .board{
+    width: $board-h-squares * $tile-width;  
+    height: $board-v-squares * $tile-width;
+    display: inline-block;
+  }
+
+  .square{
+    background-color: $tile-1-colour;
+    width: $tile-width;
+    height: $tile-width;
+    position: relative;
+    float: left;
+    outline: 1px solid rgba(0, 0, 0, 0.2);
+    &.green{
+      background-color: $tile-3-colour;
+      background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#cadfaa), color-stop(50%,#cadfaa), color-stop(52%,#f4f3f0), color-stop(100%,#f4f3f0), color-stop(100%,#7db9e8));
+      background: -webkit-radial-gradient(center, ellipse cover, #cadfaa 0%,#cadfaa 50%,#f4f3f0 52%,#f4f3f0 100%,#7db9e8 100%);    }
+    &.commercial{
+      background-color: $tile-2-colour;
+    }
+    .tile{
+      background: none;
+      outline: none;
+    }
+  }
+
+  .target-square{
+    background-color: #ccc;
+    box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.25);
+  }
+
+  .tile{
+    background-color: $tile-1-colour;
+    width: $tile-width;
+    height: $tile-width;
+    overflow: hidden;
+    position: relative;
+    float: left;
+    outline: 1px solid #bbb;
+    text-shadow: none;
+
+    &:hover{
+      cursor: hand;
+    }
+
+    .value{
+      float: right;
+      padding: 4px 6px 0 0;
+      color: #AAA;
+      font-size: $tile-width / 5;
+    }
+
+    // Generic road styles
+    .road{
+      border: 1px solid grey;
+      width: $tile-width * 2;
+      height: $tile-width * 2;
+      border-radius: $road-curve;
+      position: absolute;
+
+    }
+
+    // Styles for different road types
+    // We use border AND box shadow to keep the lines centred on the tiles
+    .road-1 { border: $road-1-width / 2 solid $road-1-colour; box-shadow: 0 0 0 $road-1-width / 2 $road-1-colour; }
+    .road-2 { border: $road-2-width / 2 solid $road-2-colour; box-shadow: 0 0 0 $road-2-width / 2 $road-2-colour; }
+    .road-3 { border: $road-3-width / 2 solid $road-3-colour; box-shadow: 0 0 0 $road-3-width / 2 $road-3-colour; }
+
+    .t-junct{
+      border-radius: 0;
+    }
+
+    .airport{
+      position: absolute;
+      font-size: 50px;
+      -webkit-transform: rotate(-45deg);
+      left: 20px;
+      top: 10px;
+      color: #585048;
+    }
+
+    // Styles for different road orientations
+    .tb{ bottom: $tile-width / -2; left: $tile-width / 2; } // Vertical line
+    .lr{ top: $tile-width / 2; right: $tile-width / -2; }   // Horizontal line
+    .tr{ bottom: $tile-width / 2; left: $tile-width / 2; }  // Top-right corner
+    .tl{ bottom: $tile-width / 2; right: $tile-width / 2; } // Top-left corner
+    .br{ top: $tile-width / 2; left: $tile-width / 2; }     // Bottom-right corner
+    .bl{ top: $tile-width / 2; right: $tile-width / 2; }    // Bottome-left corner
+
+
+    &.ui-draggable-dragging{
+      box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25);
+      background-color: $tile-1-colour;
+      outline: 1px solid #bbb;
+    }
+  }
+
+.side-bar{
+  width: 300px;
+  display: inline-block;
+  vertical-align: top;
+  text-shadow: 1px 1px rgba(0, 0, 0, .5);
+}
+
+.game-stats,
+.player,
+.new-game{
+  padding: 10px;
+  margin-right: 14px;
+  margin-bottom: 20px;
+  h2{
+    font-size: 22px;
+    margin: 5px 0;
+  }
+}
+
+.player{
+  background-color: grey;
+  &.current {
+    h2{
+      margin-bottom: 15px;
+    }
+    .score{
+      margin-top: -42px;  
+    }
+  }
+}
+
+.new-game{
+  background-color: grey;
+  padding-top: 10px;
+}
+
+.score{
+  width: 130px;
+  float: right;
+  text-align: right;
+  margin-top: -32px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.game-stats{
+  margin-top: 20px;
+}
+
+
+.tile-rack{
+  background-color: #ccc;
+  height: 258px;
+  padding: 6px 0 0 6px;
+  //margin-top: 15px;
+  .tile{
+    margin: 0 6px 6px 0;
+  }
+}
+
+.play-turn,
+.new-game a{
+  padding: 20px 0 20px 0;
+  display: block;
+  background: green;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  font-size: 28px;
+  margin-top: 10px;
+  &:hover{
+    background: lighten(green, 10%);
+  }
+}
+
+.new-game a{
+  margin-top: 0;
+}
+
+.player h2{
+  color: white;
+}
+
+
