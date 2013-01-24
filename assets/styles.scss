@@ -55,28 +55,34 @@
       background-color: $tile-2-colour;
     }
     .tile{
-      background: none;
       outline: none;
     }
   }
 
   .target-square{
     background-color: #ccc;
-    box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.25);
+    box-shadow: inset 5px 5px 2px rgba(0, 0, 0, 0.2);
   }
 
+
+
   .tile{
-    background-color: $tile-1-colour;
+    //background-color: $tile-1-colour;
+    background-color: white;
     width: $tile-width;
     height: $tile-width;
     overflow: hidden;
     position: relative;
     float: left;
     outline: 1px solid #bbb;
-    text-shadow: none;
+    text-shadow: none;    
+    cursor: hand;
 
-    &:hover{
-      cursor: hand;
+    &.played{
+      background: none;    
+      &:hover{
+        cursor: default;
+      }
     }
 
     .value{
@@ -126,7 +132,7 @@
 
     &.ui-draggable-dragging{
       box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25);
-      background-color: $tile-1-colour;
+      //background-color: $tile-1-colour;
       outline: 1px solid #bbb;
     }
   }
@@ -152,14 +158,6 @@
 
 .player{
   background-color: grey;
-  &.current {
-    h2{
-      margin-bottom: 15px;
-    }
-    .score{
-      margin-top: -42px;  
-    }
-  }
 }
 
 .new-game{
@@ -185,9 +183,12 @@
   background-color: #ccc;
   height: 258px;
   padding: 6px 0 0 6px;
-  //margin-top: 15px;
+  border-top: 10px solid grey;
   .tile{
     margin: 0 6px 6px 0;
+    &:hover{
+      cursor: hand;
+    }
   }
 }
 
