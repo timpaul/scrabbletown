@@ -150,7 +150,7 @@ a:active{
   text-shadow: 1px 1px rgba(0, 0, 0, .5);
 }
 
-.game-stats,
+.tile-count,
 .player,
 .new-game{
   padding: 10px;
@@ -180,7 +180,7 @@ a:active{
   font-weight: bold;
 }
 
-.game-stats{
+.tile-count{
   margin-top: 20px;
 }
 
@@ -220,6 +220,10 @@ a:active{
 
 .player h2{
   color: white;
+}
+
+.winner{
+  background-color: green;
 }
 
 // =======================================
@@ -262,12 +266,6 @@ a:active{
 
 .close-help{
   outline: none;
-}
-
-
-
-.ui-dialog-titlebar{
-  //display: none;
 }
 
 

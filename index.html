@@ -263,15 +263,15 @@
 
           $('#player-1').removeClass('current').find('.controls').slideUp('fast');
           $('#player-2').removeClass('current').find('.controls').slideUp('fast');
-          $('.game-stats').hide();
+          $('.tile-count').hide();
           $('.new-game').show();
 
           if(playerOneScore > playerTwoScore) {
-            alert('Player 1 wins!');
-          } else if(playerOneScore < playerTwoScore) { 
-            alert('Player 2 wins!');
+            $('#player-1').addClass('winner').find('h2').append(' wins!');
+          } else if(playerOneScore < playerTwoScore) {
+            $('#player-2').addClass('winner').find('h2').append(' wins!');
           } else {
-            alert("It's a draw!");
+            $('.player').addClass('draw').find('h2').append(' draws!');
           }
         }
       }
@@ -360,11 +360,7 @@
       </div>
     </div>
   </div>
-  <div class="game-stats">
-    <div id="tile-count">
-      <span class="tile-count"></span>
-    </div>
-  </div>
+  <span class="tile-count"></span>
   <div class="new-game">
     <a href="">New game</a>
   </div>
