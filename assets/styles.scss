@@ -25,6 +25,15 @@
   $tile-2-colour: #dfdbd4;
   $tile-3-colour: #cadfaa;
 
+a,
+a:hover,
+a:visited,
+a:active{
+  color: lightblue;
+  &:hover{
+    text-decoration: none;
+  }
+}
 
 
   .board-base{
@@ -64,10 +73,7 @@
     box-shadow: inset 5px 5px 2px rgba(0, 0, 0, 0.2);
   }
 
-
-
   .tile{
-    //background-color: $tile-1-colour;
     background-color: white;
     width: $tile-width;
     height: $tile-width;
@@ -197,7 +203,7 @@
   padding: 20px 0 20px 0;
   display: block;
   background: green;
-  color: white;
+  color: white !important;
   text-decoration: none;
   text-align: center;
   font-size: 28px;
@@ -209,10 +215,59 @@
 
 .new-game a{
   margin-top: 0;
+  color: white;
 }
 
 .player h2{
   color: white;
+}
+
+// =======================================
+// 'HOW TO PLAY' DIALOG
+
+// Link
+.how-to-play{
+  margin-right: 15px;
+  margin-top: -42px;
+  float: right;
+}
+
+// Dialog overlay
+.ui-widget-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.8;
+  filter:Alpha(Opacity=30); 
+}
+
+// Dialog box
+.ui-dialog{
+  background-color: #444;
+  border: 10px solid black;
+  padding: 0 20px;
+  position: absolute;
+  overflow: hidden;
+  h2{
+    margin-top: 0;
+  }
+}
+.ui-dialog-titlebar-close{
+  margin: 10px -10px;
+  float: right;
+}
+
+.close-help{
+  outline: none;
+}
+
+
+
+.ui-dialog-titlebar{
+  //display: none;
 }
 
 

@@ -5,6 +5,17 @@ body {
   color: white;
   -webkit-font-smoothing: antialiased; }
 
+a,
+a:hover,
+a:visited,
+a:active {
+  color: lightblue; }
+  a:hover,
+  a:hover:hover,
+  a:visited:hover,
+  a:active:hover {
+    text-decoration: none; }
+
 .board-base {
   width: 720px;
   padding: 10px;
@@ -153,7 +164,7 @@ body {
   padding: 20px 0 20px 0;
   display: block;
   background: green;
-  color: white;
+  color: white !important;
   text-decoration: none;
   text-align: center;
   font-size: 28px;
@@ -163,7 +174,39 @@ body {
     background: #00b300; }
 
 .new-game a {
-  margin-top: 0; }
+  margin-top: 0;
+  color: white; }
 
 .player h2 {
   color: white; }
+
+.how-to-play {
+  margin-right: 15px;
+  margin-top: -42px;
+  float: right; }
+
+.ui-widget-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.8;
+  filter: Alpha(Opacity=30); }
+
+.ui-dialog {
+  background-color: #444;
+  border: 10px solid black;
+  padding: 0 20px;
+  position: absolute;
+  overflow: hidden; }
+  .ui-dialog h2 {
+    margin-top: 0; }
+
+.ui-dialog-titlebar-close {
+  margin: 10px -10px;
+  float: right; }
+
+.close-help {
+  outline: none; }
