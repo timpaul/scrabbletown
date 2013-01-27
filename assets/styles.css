@@ -3,7 +3,9 @@ body {
   padding: 20px 10px;
   background-color: #333;
   color: white;
-  -webkit-font-smoothing: antialiased; }
+  -webkit-font-smoothing: antialiased;
+  width: 1024px;
+  height: 768px; }
 
 a,
 a:hover,
@@ -17,21 +19,19 @@ a:active {
     text-decoration: none; }
 
 .board-base {
-  width: 720px;
   padding: 10px;
   background-color: grey;
   display: inline-block;
   margin-top: -60px; }
 
 .board {
-  width: 720px;
-  height: 720px;
+  height: 693px;
   display: inline-block; }
 
 .square {
   background-color: #f4f3f0;
-  width: 80px;
-  height: 80px;
+  width: 77px;
+  height: 77px;
   position: relative;
   float: left;
   outline: 1px solid rgba(0, 0, 0, 0.2); }
@@ -50,8 +50,8 @@ a:active {
 
 .tile {
   background-color: white;
-  width: 80px;
-  height: 80px;
+  width: 77px;
+  height: 77px;
   overflow: hidden;
   position: relative;
   float: left;
@@ -66,12 +66,12 @@ a:active {
     float: right;
     padding: 4px 6px 0 0;
     color: #AAA;
-    font-size: 16px; }
+    font-size: 15.4px; }
   .tile .road {
     border: 1px solid grey;
-    width: 160px;
-    height: 160px;
-    border-radius: 40px;
+    width: 154px;
+    height: 154px;
+    border-radius: 38.5px;
     position: absolute; }
   .tile .road-1 {
     border: 1px solid #ffc345;
@@ -92,23 +92,23 @@ a:active {
     top: 10px;
     color: #585048; }
   .tile .tb {
-    bottom: -40px;
-    left: 40px; }
+    bottom: -38.5px;
+    left: 38.5px; }
   .tile .lr {
-    top: 40px;
-    right: -40px; }
+    top: 38.5px;
+    right: -38.5px; }
   .tile .tr {
-    bottom: 40px;
-    left: 40px; }
+    bottom: 38.5px;
+    left: 38.5px; }
   .tile .tl {
-    bottom: 40px;
-    right: 40px; }
+    bottom: 38.5px;
+    right: 38.5px; }
   .tile .br {
-    top: 40px;
-    left: 40px; }
+    top: 38.5px;
+    left: 38.5px; }
   .tile .bl {
-    top: 40px;
-    right: 40px; }
+    top: 38.5px;
+    right: 38.5px; }
   .tile.ui-draggable-dragging {
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25);
     outline: 1px solid #bbbbbb; }
