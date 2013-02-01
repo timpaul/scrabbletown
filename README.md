@@ -19,6 +19,8 @@ However, if you lay roads through a parkland zone (green square) the tile value 
 
 When the last tile has been played the winner is the person with the most points.
 
+[Play Scrabbletown now!](http://timpaul.github.com/scrabbletown/)
+
 ## Why have you done this?
 
 I got a bit obsessed with map tiles last year during a week's holiday in a caravan near the Welsh border (blame a lack of internet access). It all ended badly...
