@@ -1,4 +1,4 @@
-# What is this?
+## What is this?
 
 [Scrabbletown](http://timpaul.github.com/scrabbletown/) is a tile game written in HTML5, CSS and JavaScript. It's similar to another popular tile-based word game, but with roads instead of letters.
 
