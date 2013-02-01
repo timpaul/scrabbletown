@@ -1,6 +1,8 @@
 # What is this?
 
-[Scrabbletown](http://eccentricroadside.blogspot.co.uk/2009/08/lost-for-words-greetings-from.html) is a tile game written in HTML5, CSS and JavaScript. It's similar to another popular tile-based word game, but with roads instead of letters.
+[Scrabbletown](http://timpaul.github.com/scrabbletown/) is a tile game written in HTML5, CSS and JavaScript. It's similar to another popular tile-based word game, but with roads instead of letters.
+
+It's also [a real place](http://eccentricroadside.blogspot.co.uk/2009/08/lost-for-words-greetings-from.html).
 
 ## How do I play?
 
