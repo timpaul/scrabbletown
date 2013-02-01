@@ -25,7 +25,7 @@ When the last tile has been played the winner is the person with the most points
 
 I got a bit obsessed with map tiles last year during a week's holiday in a caravan near the Welsh border (blame a lack of internet access). It all ended badly...
 
-![Oh dear...](http://farm9.staticflickr.com/8078/8298938869_722871a6ed_n.jpg)
+[![Oh dear...](http://farm9.staticflickr.com/8078/8298938869_722871a6ed_n.jpg)](http://www.flickr.com/photos/timpaul/8298938869/)
 
 I think the idea has been bouncing around in my head ever since.
 
