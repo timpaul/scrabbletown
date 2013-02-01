@@ -6,6 +6,9 @@
     -webkit-font-smoothing: antialiased;
   }
 
+.highlight{
+  background: red !important;
+}
 
 
   $board-h-squares: 9;
@@ -57,15 +60,33 @@ a:active{
     float: left;
     outline: 1px solid rgba(0, 0, 0, 0.2);
     &.green{
-      background-color: $tile-3-colour;
-      background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#cadfaa), color-stop(50%,#cadfaa), color-stop(52%,#f4f3f0), color-stop(100%,#f4f3f0), color-stop(100%,#7db9e8));
-      background: -webkit-radial-gradient(center, ellipse cover, #cadfaa 0%,#cadfaa 50%,#f4f3f0 52%,#f4f3f0 100%,#7db9e8 100%);    }
+      background-image: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#cadfaa), color-stop(50%,#cadfaa), color-stop(52%,#f4f3f0), color-stop(100%,#f4f3f0), color-stop(100%,#7db9e8));
+      background-image: -webkit-radial-gradient(center, ellipse cover, #cadfaa 0%,#cadfaa 50%,#f4f3f0 52%,#f4f3f0 100%,#7db9e8 100%);
+      .tile:not(.played){
+        background-image: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#cadfaa), color-stop(50%,#cadfaa), color-stop(52%,#fff), color-stop(100%,#fff), color-stop(100%,#7db9e8));
+        background-image: -webkit-radial-gradient(center, ellipse cover, #cadfaa 0%,#cadfaa 50%,#fff 52%,#fff 100%,#7db9e8 100%) 
+      }
+    }
     &.commercial{
       background-color: $tile-2-colour;
+      background-image: -webkit-linear-gradient(top, rgba(244,243,240,1) 0%,rgba(244,243,240,1) 17%,transparent 17%,transparent 83%,rgba(244,243,240,1) 83%),
+                        -webkit-linear-gradient(left, rgba(244,243,240,1) 0%,rgba(244,243,240,1) 17%,transparent 17%,transparent 83%,rgba(244,243,240,1) 83%);
+      .tile:not(.played){
+      background-color: $tile-2-colour;
+      background-image: -webkit-linear-gradient(top, white 0%, white 17%, transparent 17%, transparent 83%, white 83%),
+                        -webkit-linear-gradient(left, white 0%, white 17%, transparent 17%, transparent 83%, white 83%)
+      }                  
     }
     .tile{
       outline: none;
+      //background: none;
     }
+
+  }
+
+
+  .has-tile{
+    border: 5px solid red !important;
   }
 
   .target-square{
@@ -138,7 +159,7 @@ a:active{
 
     &.ui-draggable-dragging{
       box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25);
-      //background-color: $tile-1-colour;
+      background-color: white;
       outline: 1px solid #bbb;
     }
   }
@@ -268,4 +289,14 @@ a:active{
   outline: none;
 }
 
+
+
+// Github banner
+
+#github-banner img{
+  position: absolute; 
+  top: 0; right: 0; 
+  border: 0; 
+  -webkit-transform: rotate(90deg);
+}
 
