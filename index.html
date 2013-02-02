@@ -215,6 +215,11 @@
         }
       }
 
+      // Returns true if all the tile edges match those of it's neighbours
+      function hasMatchingNeighbours(square) {
+        return true;
+      }
+
       // Update the number of tiles left
       function updateTilesLeft() {
         var tilesOnBoard = $("#board .tile").size();
@@ -363,8 +368,10 @@
       function isValidMove() {
         var tilesInPlay = $('.board .tile:not(.played)');
 
-        var allInPlayConnected = true; // All in-play tiles must be connected in a single group
-        var connectedToPlayed = false; // The group of in-play tiles must be connected to the other tiles
+        var allInPlayConnected = true;  // All in-play tiles must be connected in a single group
+        var allEdgesMatch = true;       // All connected edges of the in-play tiles match
+        var connectedToPlayed = false;  // The group of in-play tiles must be connected to the other tiles
+
 
         // For each tile in the current move...
         tilesInPlay.each(function() {
@@ -375,6 +382,10 @@
             // Check that the tile is next to another 'in-play' tile
             if (hasNeighbours(square, 'in-play') == false){
               return allInPlayConnected = false;
+            };
+            // Check that the tile edges match those of any neighbours
+            if (hasMatchingNeighbours(square) == false){
+              return allEdgesMatch = false;
             };
           }
           // If there are already played tiles on the board...
@@ -389,7 +400,7 @@
           
         });
         
-        if (allInPlayConnected && connectedToPlayed){
+        if (allInPlayConnected && allEdgesMatch && connectedToPlayed){
           return true
         } else {
           return false
