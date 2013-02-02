@@ -258,7 +258,7 @@
       // Player takes a turn
       function playTurn(player) {
         if(isValidMove() == false){
-          alert('invalid move!');
+          $( "#invalid" ).dialog("open");
           return false;
         };
 
@@ -371,7 +371,7 @@
           var square = $(this).parent();
 
           //If board has more than one in-play tile...
-          if (tilesInPlay > 1) {
+          if (tilesInPlay.size() > 1) {
             // Check that the tile is next to another 'in-play' tile
             if (hasNeighbours(square, 'in-play') == false){
               return allInPlayConnected = false;
@@ -415,8 +415,27 @@
         return false;
       });
       // Close help dialog
-      $('.close-help').click(function() {
+      $('#dialog .close-help').click(function() {
         $( "#dialog" ).dialog("close");
+        return false;
+      });
+
+
+      // ============================================================================
+      // INVALID MOVE DIALOG
+
+      // Initialise help dialog
+      $( "#invalid" ).dialog({
+        width: 250,
+        height: "auto",
+        resizable: false,
+        draggable: true,
+        dialogClass: "help-popup",
+        autoOpen: false,
+      });
+      // Close dialog
+      $('#invalid .close-help').click(function() {
+        $( "#invalid" ).dialog("close");
         return false;
       });
 
@@ -492,6 +511,11 @@
 
 <div class="board-base">
   <div id="board" class="board"></div>
+</div>
+
+<div id="invalid">
+  <h2>You can't do that</h2>
+  <p><a href="" class="close-help">OK, got it</a></p>
 </div>
 
 </body>
