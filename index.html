@@ -15,7 +15,7 @@
 
       var boardWidth = 9;       // Board width in squares
       var boardHeight = 9;      // Board height in squares
-      var tileCoverage = 0.5    // Proportion of board covered when all tiles are played
+      var tileCoverage = 0.2    // Proportion of board covered when all tiles are played
       var tilesPerTurn = 7      // Maximum number of tiles per turn
       var roadProbability = 0.2 // Chance that a tile will contain a particular road direction
       
@@ -175,6 +175,8 @@
 
       // Initialise game
       function initialise() {
+
+
         generateBoard();
         makeTileRackDroppable('player-1');
         makeTileRackDroppable('player-2');
@@ -198,8 +200,8 @@
         var bottomNeighbour = square.parent().next().find('.square:eq('+squareIndex+')');
         var neighbours = $([topNeighbour[0], rightNeighbour[0], bottomNeighbour[0], leftNeighbour[0]]);
 
-        // By default this function looks for any neighbouring tiles
-        // But the second parameter can narrow the scope to tiles either in play or already played
+        // By default this function looks for 'any' neighbouring tiles
+        // But the second parameter can narrow the scope to tiles either 'in play' or 'already played'
         var tileType = '.tile'
         if (type == "in-play") {
           tileType = '.tile:not(.played)'; 
@@ -219,9 +221,9 @@
         var tilesInRacks = $(".tile-rack .tile").size();
         var tilesLeft = totalTiles - tilesOnBoard - tilesInRacks;
         if(tilesLeft == 1){
-          tilesLeft = tilesLeft + " tile remaining"
+          tilesLeft = tilesLeft + " tile left in bag"
         } else {
-          tilesLeft = tilesLeft + " tiles remaining"
+          tilesLeft = tilesLeft + " tiles left in bag"
         }
         $(".tile-count").empty().append(tilesLeft);
       }
@@ -276,15 +278,23 @@
         updateTilesLeft();
       }
 
+      // Return the number of tiles left in the bag
+      function tilesInBag() {
+        var tilesOnBoard = $("#board .tile").size();
+        var tilesInRacks = $(".tile-rack .tile").size();
+        var tilesInBag = totalTiles - tilesOnBoard - tilesInRacks;
+        return tilesInBag;
+      }
+
+
+
       // Fill a player's tile rack
       function fillRack(player) {
-        var tilesInRacks = $(".tile-rack .tile").size();
+        var tilesLeft = tilesInBag();
         var tilesInRack = $("#"+player+" .tile-rack .tile").size();
-        var tilesOnBoard = $("#board .tile").size();
-        var tilesLeft = totalTiles - tilesOnBoard - tilesInRacks;
         var tilesMissing = tilesPerTurn - tilesInRack;
         // If there aren't enough tiles left to fill the rack, just use what tiles are left
-        if (tilesLeft < tilesMissing ){
+        if (tilesMissing > tilesLeft){
           tilesMissing = tilesLeft;
         }
         for (var i=0; i<tilesMissing; i++){
@@ -292,9 +302,15 @@
         }
       }
 
+
+
       // Check for a winner
       function checkForWinner() {
-        if($(".tile-count").text() == "0 tiles remaining"){
+        // IF there are no tiles left in the bag AND
+        // One of the players has no tiles in their rack THEN
+        // The game has ended 
+
+        if(tilesInBag() == 0 && $('.tile-rack .tile').size() == 0){
           var playerOneScore = $('#player-1-score span').text();
           var playerTwoScore = $('#player-2-score span').text();
 
@@ -330,10 +346,13 @@
         tilesInPlay.each(function() {
           var square = $(this).parent();
 
-          // Check that the tile is next to another 'in-play' tile
-          if (hasNeighbours(square, 'in-play') == false){
-            return allInPlayConnected = false;
-          };
+          //If board has more than one in-play tile
+          if (tilesInPlay > 1) {
+            // Check that the tile is next to another 'in-play' tile
+            if (hasNeighbours(square, 'in-play') == false){
+              return allInPlayConnected = false;
+            };
+          }
 
           // If there are already played tiles on the board...
           if ($('#board .played').size() > 0) {
@@ -417,6 +436,7 @@
 <div class="side-bar">
 
 <a href="" class="how-to-play">How to play</a>
+
   <div class="game-data">
     <div class="player" id="player-1">
       <h2>Player 1</h2>
@@ -439,10 +459,10 @@
       </div>
     </div>
   </div>
-  <span class="tile-count"></span>
   <div class="new-game">
     <a href="">New game</a>
   </div>
+  <span class="tile-count"></span>
 </div>
 
 <div class="board-base">
