@@ -302,25 +302,46 @@
         }
       }
 
-
+      // Returns the total value of the tiles in a rack
+      function getRackValue(player) {
+        var rackValue = 0;
+        $('#'+player+' .value').each(function(){
+          rackValue += parseInt($(this).text());
+        });
+        return rackValue;
+      }
 
       // Check for a winner
       function checkForWinner() {
-        // IF there are no tiles left in the bag AND
-        // One of the players has no tiles in their rack THEN
-        // The game has ended
 
         var playerOneRackSize = $('#player-1 .tile').size();
         var playerTwoRackSize = $('#player-2 .tile').size();
 
+        // IF there are no tiles left in the bag AND
+        // one of the players has no tiles in their rack THEN
+        // the game has ended
+
         if(tilesInBag() == 0 && (playerOneRackSize == 0 || playerTwoRackSize == 0)){
-          var playerOneScore = $('#player-1-score span').text();
-          var playerTwoScore = $('#player-2-score span').text();
+
+          // Subtract the total value of the remaining tiles in each player's rack and update the scores
+
+          var playerOneRackValue = getRackValue('player-1');
+          var playerTwoRackValue = getRackValue('player-2');
+
+          var playerOneScore = $('#player-1-score span').text() - playerOneRackValue;
+          var playerTwoScore = $('#player-2-score span').text() - playerTwoRackValue;
+
+          $("#player-1-score span").empty().append(playerOneScore);
+          $("#player-2-score span").empty().append(playerTwoScore);
+
+          // Collapse the player controls
 
           $('#player-1').removeClass('current').find('.controls').slideUp('fast');
           $('#player-2').removeClass('current').find('.controls').slideUp('fast');
           $('.tile-count').hide();
           $('.new-game').show();
+
+          // Announce the result
 
           if(playerOneScore > playerTwoScore) {
             $('#player-1').addClass('winner').find('h2').append(' wins!');
@@ -426,7 +447,9 @@
   </p>
 
   <p>
-    When the last tile has been played the winner is the person with the most points.
+    The game ends when the bag of tiles is empty and a player has played all the tiles in their rack.
+    The value of any tiles remaining in the other player's rack are subtracted from their score.
+    The winner is the person with the highest score.
   </p>
 
   <p><a href="" class="close-help">OK, got it</a></p>

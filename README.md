@@ -17,7 +17,9 @@ You can rotate tiles by clicking on them.
 If you lay roads through a commercial zone (grey square) your tile value is doubled.
 However, if you lay roads through a parkland zone (green square) the tile value is taken off of your score.
 
-When the last tile has been played the winner is the person with the most points.
+The game ends when the bag of tiles is empty and a player has played all the tiles in their rack.
+The value of any tiles remaining in the other player's rack are subtracted from their score.
+The winner is the person with the highest score.
 
 [Play Scrabbletown now!](http://timpaul.github.com/scrabbletown/)
 
