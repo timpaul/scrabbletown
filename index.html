@@ -308,9 +308,12 @@
       function checkForWinner() {
         // IF there are no tiles left in the bag AND
         // One of the players has no tiles in their rack THEN
-        // The game has ended 
+        // The game has ended
 
-        if(tilesInBag() == 0 && $('.tile-rack .tile').size() == 0){
+        var playerOneRackSize = $('#player-1 .tile').size();
+        var playerTwoRackSize = $('#player-2 .tile').size();
+
+        if(tilesInBag() == 0 && (playerOneRackSize == 0 || playerTwoRackSize == 0)){
           var playerOneScore = $('#player-1-score span').text();
           var playerTwoScore = $('#player-2-score span').text();
 
@@ -346,14 +349,13 @@
         tilesInPlay.each(function() {
           var square = $(this).parent();
 
-          //If board has more than one in-play tile
+          //If board has more than one in-play tile...
           if (tilesInPlay > 1) {
             // Check that the tile is next to another 'in-play' tile
             if (hasNeighbours(square, 'in-play') == false){
               return allInPlayConnected = false;
             };
           }
-
           // If there are already played tiles on the board...
           if ($('#board .played').size() > 0) {
             // Check that the tile is next to another 'played' tile
