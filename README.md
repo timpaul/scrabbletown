@@ -31,8 +31,7 @@ I think the idea has been bouncing around in my head ever since.
 
 ## How can I help?
 
-Lots of ways. Fork away. All pull requests welcome. I'm especially interested in how the rules and parameters of the game could be improved - board size, number of tiles, rules around tile placement etc.
+There's lot to be done. If you're feeling helpful [take a look at the issues list](https://github.com/timpaul/scrabbletown/issues?state=open).
 
-Thanks
+I'm also interested in how the rules and parameters of the game could be improved - board size, number of tiles, rules around tile placement, position and effect of special tiles etc. All suggestions welcome.
 
-Tim
