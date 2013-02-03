@@ -348,6 +348,19 @@
 
 
       function isValid() {
+
+        var neighbourEdge = {};
+        neighbourEdge['t'] = 'b';
+        neighbourEdge['r'] = 'l';
+        neighbourEdge['b'] = 't';
+        neighbourEdge['l'] = 'r';
+        
+        var edgeMatrix = {};
+        edgeMatrix['t'] = ".tr, .tl, .tb";
+        edgeMatrix['r'] = ".tr, .br, .lr";
+        edgeMatrix['b'] = ".br, .bl, .tb";
+        edgeMatrix['l'] = ".tl, .bl, .lr";
+
         // Start with assumption that move is valid
         var valid = true;
         // If there's only one tile on the board, move is valid so don't bother with any other tests
@@ -360,22 +373,47 @@
 
           // For each tile in play...
           tilesInPlay.each(function() {
-
-            var neighbours = getNeighbours($(this));
+            var currentTile = $(this)
+            var neighbours = getNeighbours(currentTile);
             var hasInPlayNeighbour = false;
 
             // For each neighbour...
-            $.each(neighbours, function(side, tile) {
+            $.each(neighbours, function(side, neighbourTile) {
               // If there's no tile in that position, move on
-              if(!tile.length) {
+              if(!neighbourTile.length) {
                 return;
               }
 
-              // If the edges do not match
-                // Invalid move! Quit
+              // Test the edges
+
+
+              currentTileEdgeRoad = currentTile.find(edgeMatrix[side]);
+              neighbourTileEdgeRoad = neighbourTile.find(edgeMatrix[neighbourEdge[side]]);
+
+              if (currentTileEdgeRoad.length) {
+                var currentTileRoadType = currentTileEdgeRoad.last().attr("class").match("road-(.*?) ")[1];
+              } else {
+                var currentTileRoadType = 0;
+              }
+
+              if (neighbourTileEdgeRoad.length) {
+                var neighbourTileRoadType = neighbourTileEdgeRoad.last().attr("class").match("road-(.*?) ")[1];
+              } else {
+                var neighbourTileRoadType = 0;
+              }
+
+              // If one edge is empty and one has a road then FAIL
+              // If both edges are empty, this is OK, as long as AT LEAST ONE edge of the tile matches
+
+              if (currentTileRoadType != neighbourTileRoadType) {
+                valid = false;
+              }
+
+              //alert("Current:"+currentTileRoadType+" Neighbour:"+neighbourTileRoadType);
+
 
               // Check if the neighbouring tile is played or in play
-              if (tile.hasClass('played')) {
+              if (neighbourTile.hasClass('played')) {
                 hasPlayedNeighbour = true;
               } else {
                 hasInPlayNeighbour = true
