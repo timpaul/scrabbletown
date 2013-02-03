@@ -175,8 +175,6 @@
 
       // Initialise game
       function initialise() {
-
-
         generateBoard();
         makeTileRackDroppable('player-1');
         makeTileRackDroppable('player-2');
@@ -190,35 +188,6 @@
         updateScore('player-2');
       }
 
-
-      // Returns true if the current square has neighbouring tiles
-      function hasNeighbours(square, type) {
-        var squareIndex = square.index();
-        var rightNeighbour = square.next();
-        var leftNeighbour = square.prev();
-        var topNeighbour = square.parent().prev().find('.square:eq('+squareIndex+')');
-        var bottomNeighbour = square.parent().next().find('.square:eq('+squareIndex+')');
-        var neighbours = $([topNeighbour[0], rightNeighbour[0], bottomNeighbour[0], leftNeighbour[0]]);
-
-        // By default this function looks for 'any' neighbouring tiles
-        // But the second parameter can narrow the scope to tiles either 'in play' or 'already played'
-        var tileType = '.tile'
-        if (type == "in-play") {
-          tileType = '.tile:not(.played)'; 
-        } else if (type == 'played') {
-          tileType = '.tile.played';
-        }
-        if(neighbours.find(tileType).size() > 0){
-          return true;
-        } else { 
-          return false;
-        }
-      }
-
-      // Returns true if all the tile edges match those of it's neighbours
-      function hasMatchingNeighbours(square) {
-        return true;
-      }
 
       // Update the number of tiles left
       function updateTilesLeft() {
@@ -262,7 +231,8 @@
 
       // Player takes a turn
       function playTurn(player) {
-        if(isValidMove() == false){
+        //if(isValidMove() == false){
+        if(isValid() == false){
           $( "#invalid" ).dialog("open");
           return false;
         };
@@ -364,48 +334,70 @@
       // ============================================================================
       // GAME RULES
 
-      // Check that the current move is valid
-      function isValidMove() {
-        var tilesInPlay = $('.board .tile:not(.played)');
-
-        var allInPlayConnected = true;  // All in-play tiles must be connected in a single group
-        var allEdgesMatch = true;       // All connected edges of the in-play tiles match
-        var connectedToPlayed = false;  // The group of in-play tiles must be connected to the other tiles
-
-
-        // For each tile in the current move...
-        tilesInPlay.each(function() {
-          var square = $(this).parent();
-
-          //If board has more than one in-play tile...
-          if (tilesInPlay.size() > 1) {
-            // Check that the tile is next to another 'in-play' tile
-            if (hasNeighbours(square, 'in-play') == false){
-              return allInPlayConnected = false;
-            };
-            // Check that the tile edges match those of any neighbours
-            if (hasMatchingNeighbours(square) == false){
-              return allEdgesMatch = false;
-            };
-          }
-          // If there are already played tiles on the board...
-          if ($('#board .played').size() > 0) {
-            // Check that the tile is next to another 'played' tile
-            if (hasNeighbours(square, 'played') == true){
-              connectedToPlayed = true;
-            };
-          } else {
-            connectedToPlayed = true;
-          }
-          
-        });
-        
-        if (allInPlayConnected && allEdgesMatch && connectedToPlayed){
-          return true
-        } else {
-          return false
-        }
+      // Returns an array of the neighbouring tiles of a tile
+      function getNeighbours(tile) {
+        var square = tile.parent();
+        var squareIndex = square.index();
+        var neighbours = {};
+        neighbours['t'] = square.parent().prev().find('.square:eq('+squareIndex+')').find('.tile');
+        neighbours['r'] = square.next().find('.tile');
+        neighbours['b'] = square.parent().next().find('.square:eq('+squareIndex+')').find('.tile');
+        neighbours['l'] = square.prev().find('.tile');
+        return neighbours;
       }
+
+
+      function isValid() {
+        // Start with assumption that move is valid
+        var valid = true;
+        // If there's only one tile on the board, move is valid so don't bother with any other tests
+        if ($('#board .tile').size() > 1) {
+
+          // Start with assumption that none of the in play tiles are next to an already played tile
+          var hasPlayedNeighbour = false;
+          var tilesInPlay = $('.board .tile:not(.played)');
+          var tilesPlayed = $('.board .tile.played');
+
+          // For each tile in play...
+          tilesInPlay.each(function() {
+
+            var neighbours = getNeighbours($(this));
+            var hasInPlayNeighbour = false;
+
+            // For each neighbour...
+            $.each(neighbours, function(side, tile) {
+              // If there's no tile in that position, move on
+              if(!tile.length) {
+                return;
+              }
+
+              // If the edges do not match
+                // Invalid move! Quit
+
+              // Check if the neighbouring tile is played or in play
+              if (tile.hasClass('played')) {
+                hasPlayedNeighbour = true;
+              } else {
+                hasInPlayNeighbour = true
+              }
+
+            });
+            // If the in-play tiles are not all connected, move is invalid
+            if (tilesInPlay.length > 1 && !hasInPlayNeighbour) {
+              valid = false;
+            }
+          });
+
+          // If none of the the in-play tiles are next to a played tile, move is invalid
+          if(tilesPlayed.length > 1 && !hasPlayedNeighbour){
+            valid = false;
+          }
+        }
+        return valid;
+      }
+
+
+
 
       // ============================================================================
       // HELP DIALOG
