@@ -376,6 +376,7 @@
             var currentTile = $(this)
             var neighbours = getNeighbours(currentTile);
             var hasInPlayNeighbour = false;
+            var hasMatchingNeighbour = false;
 
             // For each neighbour...
             $.each(neighbours, function(side, neighbourTile) {
@@ -385,7 +386,6 @@
               }
 
               // Test the edges
-
 
               currentTileEdgeRoad = currentTile.find(edgeMatrix[side]);
               neighbourTileEdgeRoad = neighbourTile.find(edgeMatrix[neighbourEdge[side]]);
@@ -405,11 +405,13 @@
               // If one edge is empty and one has a road then FAIL
               // If both edges are empty, this is OK, as long as AT LEAST ONE edge of the tile matches
 
+              if (currentTileRoadType == neighbourTileRoadType && currentTileRoadType > 0) {
+                hasMatchingNeighbour = true;
+              }
+
               if (currentTileRoadType != neighbourTileRoadType) {
                 valid = false;
               }
-
-              //alert("Current:"+currentTileRoadType+" Neighbour:"+neighbourTileRoadType);
 
 
               // Check if the neighbouring tile is played or in play
@@ -420,6 +422,9 @@
               }
 
             });
+            if (hasMatchingNeighbour == false) {
+              valid = false;
+            }
             // If the in-play tiles are not all connected, move is invalid
             if (tilesInPlay.length > 1 && !hasInPlayNeighbour) {
               valid = false;
