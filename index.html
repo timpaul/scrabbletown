@@ -349,20 +349,23 @@
 
       function isValid() {
 
+        // Opposite edges
         var neighbourEdge = {};
         neighbourEdge['t'] = 'b';
         neighbourEdge['r'] = 'l';
         neighbourEdge['b'] = 't';
         neighbourEdge['l'] = 'r';
         
-        var edgeMatrix = {};
-        edgeMatrix['t'] = ".tr, .tl, .tb";
-        edgeMatrix['r'] = ".tr, .br, .lr";
-        edgeMatrix['b'] = ".br, .bl, .tb";
-        edgeMatrix['l'] = ".tl, .bl, .lr";
+        // Road directions that correspond to specific tile edges
+        var relevantRoads = {};
+        relevantRoads['t'] = ".tr, .tl, .tb";
+        relevantRoads['r'] = ".tr, .br, .lr";
+        relevantRoads['b'] = ".br, .bl, .tb";
+        relevantRoads['l'] = ".tl, .bl, .lr";
 
         // Start with assumption that move is valid
         var valid = true;
+        
         // If there's only one tile on the board, move is valid so don't bother with any other tests
         if ($('#board .tile').size() > 1) {
 
@@ -387,8 +390,8 @@
 
               // Test the edges
 
-              currentTileEdgeRoad = currentTile.find(edgeMatrix[side]);
-              neighbourTileEdgeRoad = neighbourTile.find(edgeMatrix[neighbourEdge[side]]);
+              currentTileEdgeRoad = currentTile.find(relevantRoads[side]);
+              neighbourTileEdgeRoad = neighbourTile.find(relevantRoads[neighbourEdge[side]]);
 
               if (currentTileEdgeRoad.length) {
                 var currentTileRoadType = currentTileEdgeRoad.last().attr("class").match("road-(.*?) ")[1];
@@ -417,7 +420,7 @@
               // Check if the neighbouring tile is played or in play
               if (neighbourTile.hasClass('played')) {
                 hasPlayedNeighbour = true;
-              } else {
+              } else if (currentTileRoadType > 0) {
                 hasInPlayNeighbour = true
               }
 
